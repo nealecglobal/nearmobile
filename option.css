@@ -1,0 +1,243 @@
+/* -------------------------------------------------------------------
+   0. CSS Variables (NEAR Blue Theme)
+   ------------------------------------------------------------------- */
+:root {
+    /* NEAR Palette */
+    --color-near-blue: #4A4AEE;
+    --color-near-blue-light: #6f7eff;
+    --color-near-blue-dark: #1f2f4e;
+    --color-light: #ffffff;
+    --color-dark: #1a1a1a;
+    --color-text-subtle: #c8d3ff; /* Light blue for subtitle text */
+
+    /* Themed Gradients, Pills, and Glows */
+    --bg-mobile: linear-gradient(135deg, var(--color-near-blue-light), var(--color-near-blue), var(--color-near-blue-dark));
+    --bg-desktop: radial-gradient(circle at 30% 70%, var(--color-near-blue-light) 0%, var(--color-near-blue) 50%, var(--color-near-blue-dark) 100%);
+
+    --text: var(--color-light); /* Main text color on dark/blue backgrounds */
+    --accent: var(--color-light); /* Accent color, mostly white */
+    --pill: linear-gradient(90deg, #6f7eff, #4A4AEE); /* Blue gradient for pills */
+    --glow: 0 0 20px rgba(74, 74, 238, 0.6); /* Blue glow */
+}
+
+/* -------------------------------------------------------------------
+   1. Global Reset & Body
+   ------------------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-mobile); /* Uses the NEAR blue gradient */
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* -------------------------------------------------------------------
+   2. Connect Wallet Section (Header & Grid)
+   ------------------------------------------------------------------- */
+.connect-wallet {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.connect-wallet h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.connect-wallet p {
+    color: var(--color-text-subtle); /* Light blue for better contrast */
+    margin-bottom: 40px;
+}
+
+.wallet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.wallet-item {
+    /* Translucent background on the blue gradient */
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px 10px;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+.wallet-item:hover {
+    /* Lighter translucent background on hover */
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-4px);
+}
+
+
+.wallet-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px;
+}
+
+
+.wallet-item span {
+    /* Changed to white for visibility on the dark/blue background */
+    color: var(--color-light); 
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* Mobile view */
+@media (max-width: 600px) {
+    .wallet-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .wallet-item img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .connect-wallet h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* -------------------------------------------------------------------
+   3. Wallet Dropdown
+   ------------------------------------------------------------------- */
+.wallet-dropdown {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    margin: 12px auto;
+}
+
+.wallet-trigger {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.wallet-trigger:hover {
+    /* Blue hover background */
+    background: rgba(74, 74, 238, 0.15);
+    border-color: var(--color-near-blue);
+}
+
+.wallet-trigger img {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+}
+
+.wallet-trigger span {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-light);
+}
+
+.arrow {
+    width: 24px;
+    height: 24px;
+    /* Blue arrow color */
+    fill: var(--color-near-blue);
+    transition: transform 0.3s ease;
+}
+
+.dropdown-open .arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    /* Darker background for the dropdown content */
+    background: var(--color-dark);
+    /* Blue border glow */
+    border: 1px solid rgba(74, 74, 238, 0.3);
+    border-radius: 20px;
+    margin-top: 8px;
+    max-height: 70vh;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 1000;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    overflow: hidden;
+}
+
+.dropdown-list.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-scroll {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 12px 0;
+    /* Beautiful scrollbar - Blue theme */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-near-blue) var(--color-dark);
+}
+
+.dropdown-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.dropdown-scroll::-webkit-scrollbar-track {
+    background: var(--color-dark);
+    border-radius: 10px;
+}
+.dropdown-scroll::-webkit-scrollbar-thumb {
+    /* Blue scrollbar thumb */
+    background: var(--color-near-blue);
+    border-radius: 10px;
+}
+
+.dropdown-list a {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    color: var(--color-light);
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.dropdown-list a:hover {
+    /* Blue hover background and text accent */
+    background: rgba(74, 74, 238, 0.2);
+    padding-left: 32px;
+    color: var(--color-near-blue);
+}
